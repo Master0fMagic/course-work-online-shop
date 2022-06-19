@@ -59,3 +59,16 @@ class Filter:
 
     def to_dict(self):
         return self.__dict__
+
+
+@dataclass()
+class Product:
+    id: int
+    name: str
+    description: str
+    price: float
+    category_id: int
+    category: str
+
+    def to_dict(self):
+        return self.__dict__

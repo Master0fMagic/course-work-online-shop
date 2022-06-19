@@ -17,7 +17,7 @@ class BaseDeliveryService(ABC):
 
 
 class BaseSeller(ABC):
-    _order_provider: provider.AbstractOrderProvider
+    _seller: provider.AbstractOrderProvider
     _client_provider: provider.AbstractClientProvider
 
     def __init__(self, ds: BaseDeliveryService):
@@ -36,6 +36,10 @@ class BaseSeller(ABC):
     def get_categories(self) -> list[dto.Filter]:
         pass
 
+    @abstractmethod
+    def get_products(self):
+        pass
+
 
 class DeliveryService(BaseDeliveryService):
     def get_delivery_services(self) -> list[dto.DeliveryService]:
@@ -50,12 +54,15 @@ class DeliveryService(BaseDeliveryService):
 
 class Seller(BaseSeller):
     def get_categories(self) -> list[dto.Filter]:
-        return self._order_provider.get_categories()
+        return self._seller.get_categories()
 
     def _save_order(self, items: list[dto.CreateOrderItemDto], delivery_id: int, client_id: int):
-        self._order_provider.save_order(items, delivery_id, client_id)
+        self._seller.save_order(items, delivery_id, client_id)
 
     def __init__(self):
         super().__init__(DeliveryService())
-        self._order_provider = provider.SqliteDataProvider.get_provider()
+        self._seller = provider.SqliteDataProvider.get_provider()
         self._client_provider = provider.SqliteDataProvider.get_provider()
+
+    def get_products(self):
+        return self._seller.get_products()

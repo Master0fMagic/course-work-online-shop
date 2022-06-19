@@ -71,12 +71,19 @@ class AbstractOrderProvider(ABC):
     def get_categories(self):
         pass
 
+    @abstractmethod
+    def get_products(self):
+        pass
+
 
 class SqliteDataProvider(AbstractClientProvider, AbstractDeliveryProvider, AbstractOrderProvider):
     _provider = None
 
     def __init__(self):
         self._db = SqliteDatabaseProvider()
+
+    def return_list(self, sql: str, c: converter.AbstractConverter):
+        return [c.convert(data=item) for item in self._db.execute_select(sql)]
 
     @classmethod
     def get_provider(cls):
@@ -169,8 +176,7 @@ VALUES ({service_id}, '{address}') returning id'''
     def get_services(self):
         sql = 'select * from deliveryservice'
 
-        return [converter.DbResponseToDeliveryServiceConverter().convert(data=item) for item in
-                self._db.execute_select(sql)]
+        return self.return_list(sql, converter.DbResponseToDeliveryServiceConverter())
 
     #   endregion
 
@@ -190,6 +196,12 @@ VALUES ({int(time.time())}, {client_id}, {delivery_id}, {discount}) returning id
 
     def get_categories(self):
         sql = 'select * from productcategoty'
-        return [converter.DbResponseToFilerConverter().convert(data=item) for item in self._db.execute_select(sql)]
+        return self.return_list(sql, converter.DbResponseToFilerConverter())
 
+    def get_products(self):
+        sql = '''SELECT p.id , p.name, p.description, p.price, p2.id , p2.name 
+from product p 
+join productcategoty p2 on p2.id  = p.id '''
+
+        return self.return_list(sql, converter.DbResponseToProductConverter())
     #   endregion

@@ -157,11 +157,34 @@ def get_categories():
     }
 
 
+@app.route('/api/products')
+@login_required
+def get_products():
+    """
+
+    :return: {
+     "data": [
+        {
+            "category": "Смартфони",
+            "category_id": 5,
+            "description": "12/256",
+            "id": 5,
+            "name": "Google Pixel 6 Pro",
+            "price": 38999.0
+        },
+        ]
+    }
+   """
+    seller = Seller()
+    return {
+        'data': [item.to_dict() for item in seller.get_products()]
+    }
+
+
 # todo add get apis for:
 #               order history short ( date, sum, discount, sum_with_discount, delivery address, delivery service,
 #                   delivery price, total sum )
-#               order history full ( products bought: name, category, description, price for one, amount )
-#               product catalog ( name, description, price, category_id, category )
+#               products by order ( products bought: name, category, description, price for one, amount )
 
 
 app.run()
