@@ -67,6 +67,10 @@ class AbstractOrderProvider(ABC):
     def save_order(self, items: list[dto.CreateOrderItemDto], delivery_id: int, client_id: int):
         pass
 
+    @abstractmethod
+    def get_categories(self):
+        pass
+
 
 class SqliteDataProvider(AbstractClientProvider, AbstractDeliveryProvider, AbstractOrderProvider):
     _provider = None
@@ -183,5 +187,9 @@ VALUES ({int(time.time())}, {client_id}, {delivery_id}, {discount}) returning id
         '''
 
         self._db.execute_update(sql)
+
+    def get_categories(self):
+        sql = 'select * from productcategoty'
+        return [converter.DbResponseToFilerConverter().convert(data=item) for item in self._db.execute_select(sql)]
 
     #   endregion

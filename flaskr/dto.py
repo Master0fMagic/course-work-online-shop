@@ -50,3 +50,12 @@ class DeliveryService:
 
     def to_dict(self):
         return self.__dict__
+
+
+@dataclass()
+class Filter:
+    id: int
+    name: str
+
+    def to_dict(self):
+        return self.__dict__

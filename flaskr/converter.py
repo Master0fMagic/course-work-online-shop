@@ -34,3 +34,16 @@ class DbResponseToDeliveryServiceConverter(AbstractConverter):
             raise KeyError('"data" is not present in kwargs')
 
         return dto.DeliveryService(*kwargs['data'])
+
+
+class DbResponseToFilerConverter(AbstractConverter):
+    def convert(self, **kwargs):
+        """
+        kwargs:
+            data: list|set|tuple with db result
+        """
+
+        if 'data' not in kwargs:
+            raise KeyError('"data" is not present in kwargs')
+
+        return dto.Filter(*kwargs['data'])

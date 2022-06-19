@@ -137,13 +137,31 @@ def get_login_services():
     }
 
 
+@app.route('/api/order/categories')
+@login_required
+def get_categories():
+    """
+
+    :return: {
+    "data": [
+        {
+            "id": 5,
+            "name": "Смартфони"
+        }
+        ]
+    }
+    """
+    seller = Seller()
+    return {
+        'data': [item.to_dict() for item in seller.get_categories()]
+    }
+
+
 # todo add get apis for:
 #               order history short ( date, sum, discount, sum_with_discount, delivery address, delivery service,
 #                   delivery price, total sum )
 #               order history full ( products bought: name, category, description, price for one, amount )
-#               category filters
 #               product catalog ( name, description, price, category_id, category )
-#               delivery services ( name, id, price )
 
 
 app.run()

@@ -32,6 +32,10 @@ class BaseSeller(ABC):
         self._save_order(items, delivery_id, client_id)
         self._client_provider.update_client_loyality_level(client_id)
 
+    @abstractmethod
+    def get_categories(self) -> list[dto.Filter]:
+        pass
+
 
 class DeliveryService(BaseDeliveryService):
     def get_delivery_services(self) -> list[dto.DeliveryService]:
@@ -45,6 +49,9 @@ class DeliveryService(BaseDeliveryService):
 
 
 class Seller(BaseSeller):
+    def get_categories(self) -> list[dto.Filter]:
+        return self._order_provider.get_categories()
+
     def _save_order(self, items: list[dto.CreateOrderItemDto], delivery_id: int, client_id: int):
         self._order_provider.save_order(items, delivery_id, client_id)
 
