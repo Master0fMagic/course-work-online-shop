@@ -33,3 +33,9 @@ class Client(UserMixin):
     @property
     def phone_number(self) -> str:
         return self._phone_number
+
+
+class CreateOrderItemDto:
+    def __init__(self, product_id=-1, amount=-1):
+        self.product_id = product_id
+        self.amount = amount

@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 from setup import init_app
 from clientService import ClientService
+from seller import Seller
 from flask_login import login_user, logout_user, login_required, current_user
 import error
 import dto
@@ -84,3 +85,36 @@ def sing_up():
     client = cs.register_new_user(first_name, last_name, phone, password, email)
     login_user(client)
     return jsonify(success=True)
+
+
+@app.route('/api/order/create', methods=['POST'])
+@login_required
+def create_order():
+    """
+    takes json:{
+    "address": "",
+    "delivery_service_id": "",
+    "items": [
+        {
+        "product_id":1,
+        "amount": 1
+        }
+    ]
+
+    }
+    :return: 200
+    """
+    address = request.json.get('address')
+    delivery_service_id = request.json.get('delivery_service_id')
+    items = [dto.CreateOrderItemDto(product_id=item['product_id'], amount=item['amount']) for item in
+             request.json.get('items')]
+
+    if not (address and delivery_service_id and items):
+        abort(400, 'not all fields persist')
+
+    seller = Seller()
+    seller.create_order(address, delivery_service_id, items, current_user.id)
+    return jsonify(success=True)
+
+
+app.run()
