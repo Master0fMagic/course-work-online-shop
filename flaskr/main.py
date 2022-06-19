@@ -181,6 +181,19 @@ def get_products():
     }
 
 
+@app.route('/api/order/history')
+@login_required
+def get_order_history():
+    """
+
+    :return:
+    """
+    seller = Seller()
+    return {
+        'data': [item.to_dict() for item in seller.get_order_history(current_user.id)]
+    }
+
+
 # todo add get apis for:
 #               order history short ( date, sum, discount, sum_with_discount, delivery address, delivery service,
 #                   delivery price, total sum )

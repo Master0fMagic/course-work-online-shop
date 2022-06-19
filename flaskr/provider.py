@@ -75,6 +75,10 @@ class AbstractOrderProvider(ABC):
     def get_products(self):
         pass
 
+    @abstractmethod
+    def get_client_orders(self, client_id: int) -> list[dto.Order]:
+        pass
+
 
 class SqliteDataProvider(AbstractClientProvider, AbstractDeliveryProvider, AbstractOrderProvider):
     _provider = None
@@ -201,7 +205,21 @@ VALUES ({int(time.time())}, {client_id}, {delivery_id}, {discount}) returning id
     def get_products(self):
         sql = '''SELECT p.id , p.name, p.description, p.price, p2.id , p2.name 
 from product p 
-join productcategoty p2 on p2.id  = p.id '''
+join productcategoty p2 on p2.id  = p.category '''
 
         return self.return_list(sql, converter.DbResponseToProductConverter())
+
+    def get_client_orders(self, client_id: int) -> list[dto.Order]:
+        sql = f'''SELECT o.id , o.createtime , sum(p.price * o2.amount), o.discount, 
+        sum(p.price * o2.amount) * (1 - o.discount), d.deliveryaddress,d2.name, d2.price, 
+sum(p.price * o2.amount) * (1 - o.discount) + d2.price 
+from "order" o 
+join orderitem o2 on o2.orderid = o.id 
+join product p on p.id = o2.productid 
+join delivery d on d.id = o.deliveryid 
+join deliveryservice d2 on d2.id = d.serviceid 
+where o.clientid = {client_id}
+group by o.id '''
+
+        return self.return_list(sql, converter.DbResponseToOrderConverter())
     #   endregion

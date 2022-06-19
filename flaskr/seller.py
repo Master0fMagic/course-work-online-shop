@@ -40,6 +40,10 @@ class BaseSeller(ABC):
     def get_products(self):
         pass
 
+    @abstractmethod
+    def get_order_history(self, client_id) -> list[dto.Order]:
+        pass
+
 
 class DeliveryService(BaseDeliveryService):
     def get_delivery_services(self) -> list[dto.DeliveryService]:
@@ -53,6 +57,9 @@ class DeliveryService(BaseDeliveryService):
 
 
 class Seller(BaseSeller):
+    def get_order_history(self, client_id) -> list[dto.Order]:
+        return self._seller.get_client_orders(client_id)
+
     def get_categories(self) -> list[dto.Filter]:
         return self._seller.get_categories()
 

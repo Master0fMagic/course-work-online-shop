@@ -72,3 +72,19 @@ class Product:
 
     def to_dict(self):
         return self.__dict__
+
+
+@dataclass()
+class Order:
+    id: int
+    date: int
+    sum: float
+    discount: float
+    sum_with_discount: float
+    address: str
+    delivery_service: str
+    delivery_price: float
+    total_sum: float
+
+    def to_dict(self):
+        return self.__dict__
