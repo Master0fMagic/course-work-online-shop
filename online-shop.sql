@@ -1,0 +1,77 @@
+CREATE TABLE deliveryservice(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL,
+price DOUBLE NOT NULL
+);
+
+
+CREATE TABLE seller(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+firstname TEXT not null,
+lastname TEXT  NOT NULL
+);
+
+CREATE TABLE productcategoty(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL
+);
+
+CREATE TABLE loyality(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+discount DOUBLE NOT NULL,
+requiredsum DOUBLE NOT NULL
+);
+
+
+CREATE TABLE product(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+description TEXT,
+name TEXT NOT NULL,
+price DOUBLE NOT NULL,
+amount INTEGER NOT NULL,
+category INTEGER NOT NULL,
+FOREIGN KEY(category) references productcategoty(id)
+);
+
+CREATE TABLE client(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+firstname TEXT NOT NULL,
+lastname TEXT NOT NULL,
+email TEXT NOT NULL,
+phone TEXT NOT NULL,
+loyalitylevel INTEGER NOT NULL,
+FOREIGN KEY(loyalitylevel) REFERENCES loyality(id)
+);
+
+CREATE TABLE delivery(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+deliverydate UNSIGNED BIG INT NOT NULL,
+serviceid INTEGER NOT NULL,
+deliveryaddress TEXT NOT NULL,
+FOREIGN KEY (serviceid) REFERENCES deliveryservice(id)
+);
+
+
+CREATE TABLE "order"(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+createtime INSUGNED BIG INT NOT NULL,
+clientid INTEGER NOT NULL,
+sellerid INTEGER NOT NULL,
+deliveryid INTEGER NOT NULL,
+FOREIGN KEY(clientid) REFERENCES client(id),
+FOREIGN KEY(sellerid) REFERENCES seller(id),
+FOREIGN KEY(deliveryid) REFERENCES delivery(id)
+);
+
+
+CREATE TABLE orderitem(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+productid INTEGER NOT NULL,
+amount INTEGER NOT NULL,
+orderid INTEGER NOT NULL,
+FOREIGN KEY(productid) REFERENCES product(id),
+FOREIGN KEY(orderid) REFERENCES "order"(id)
+);
+
+
+
