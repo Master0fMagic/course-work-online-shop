@@ -88,3 +88,15 @@ class Order:
 
     def to_dict(self):
         return self.__dict__
+
+
+@dataclass()
+class OrderProductInfo:
+    name: str
+    category: str
+    description: str
+    price: float
+    amount: int
+
+    def to_dict(self):
+        return self.__dict__

@@ -185,8 +185,21 @@ def get_products():
 @login_required
 def get_order_history():
     """
-
-    :return:
+    :return:{
+     "data": [
+        {
+            "address": "м.Харків, пр.Героїв Харкова, 27Б, 67",
+            "date": 1655650779,
+            "delivery_price": 45.0,
+            "delivery_service": "GLOVO",
+            "discount": 0.0,
+            "id": 2,
+            "sum": 34999.0,
+            "sum_with_discount": 34999.0,
+            "total_sum": 35044.0
+        }
+        ]
+    }
     """
     seller = Seller()
     return {
@@ -194,10 +207,28 @@ def get_order_history():
     }
 
 
-# todo add get apis for:
-#               order history short ( date, sum, discount, sum_with_discount, delivery address, delivery service,
-#                   delivery price, total sum )
-#               products by order ( products bought: name, category, description, price for one, amount )
+@app.route('/api/order/history/<int:id>')
+@login_required
+def get_order_product(id: int):
+    """
+    :param id: order id
+    :return: {
+         "data": [
+            {
+                "amount": 1,
+                "category": "Смартфони",
+                "description": "256gb",
+                "name": "Apple Iphone 13",
+                "price": 34999.0
+            }
+        ]
+    }
+    """
+
+    seller = Seller()
+    return {
+        'data': [item.to_dict() for item in seller.get_products_by_order(id)]
+    }
 
 
 app.run()
