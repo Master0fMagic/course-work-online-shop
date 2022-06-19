@@ -11,6 +11,10 @@ class BaseDeliveryService(ABC):
     def create_delivery(self, address: str, delivery_service_id: int) -> int:
         pass
 
+    @abstractmethod
+    def get_delivery_services(self) -> list[dto.DeliveryService]:
+        pass
+
 
 class BaseSeller(ABC):
     _order_provider: provider.AbstractOrderProvider
@@ -30,6 +34,9 @@ class BaseSeller(ABC):
 
 
 class DeliveryService(BaseDeliveryService):
+    def get_delivery_services(self) -> list[dto.DeliveryService]:
+        return self._provider.get_services()
+
     def create_delivery(self, address: str, delivery_service_id: int) -> int:
         return self._provider.save_delivery(delivery_service_id, address)
 

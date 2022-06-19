@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 from setup import init_app
 from clientService import ClientService
-from seller import Seller
+from seller import Seller, DeliveryService
 from flask_login import login_user, logout_user, login_required, current_user
 import error
 import dto
@@ -115,6 +115,35 @@ def create_order():
     seller = Seller()
     seller.create_order(address, delivery_service_id, items, current_user.id)
     return jsonify(success=True)
+
+
+@app.route('/api/delivery-services')
+@login_required
+def get_login_services():
+    """
+
+    :return: {
+    "data": [
+        {
+            "id": 1,
+            "name": "GLOVO",
+            "price": 45.0
+        }
+    }
+    """
+    ds = DeliveryService()
+    return {
+        'data': [item.to_dict() for item in ds.get_delivery_services()]
+    }
+
+
+# todo add get apis for:
+#               order history short ( date, sum, discount, sum_with_discount, delivery address, delivery service,
+#                   delivery price, total sum )
+#               order history full ( products bought: name, category, description, price for one, amount )
+#               category filters
+#               product catalog ( name, description, price, category_id, category )
+#               delivery services ( name, id, price )
 
 
 app.run()

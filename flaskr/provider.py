@@ -57,6 +57,10 @@ class AbstractDeliveryProvider(ABC):
     def save_delivery(self, service_id, address) -> int:
         pass
 
+    @abstractmethod
+    def get_services(self):
+        pass
+
 
 class AbstractOrderProvider(ABC):
     @abstractmethod
@@ -76,6 +80,7 @@ class SqliteDataProvider(AbstractClientProvider, AbstractDeliveryProvider, Abstr
             cls._provider = SqliteDataProvider()
         return cls._provider
 
+    #   region ClientService
     def update_client_loyality_level(self, client_id):
         sql = f'''SELECT l.id
 from loyality l
@@ -100,10 +105,9 @@ where c.id = {client_id}'''
         current_level = int(self._db.execute_select(sql)[0][0])
 
         if current_level != new_level:
-            sql = f'update client set loyalitylevel = {new_level} where id = {client_id}'
+            sql = f'update client set loyalitylevel =   {new_level} where id = {client_id}'
             self._db.execute_update(sql)
 
-    #   region ClientService
     def is_login_exist(self, login: str) -> bool:
         sql = f'''
         SELECT EXISTS (
@@ -157,6 +161,12 @@ where c.id = {client_id};'''
 VALUES ({service_id}, '{address}') returning id'''
 
         return int(self._db.execute_update(sql)[0][0])
+
+    def get_services(self):
+        sql = 'select * from deliveryservice'
+
+        return [converter.DbResponseToDeliveryServiceConverter().convert(data=item) for item in
+                self._db.execute_select(sql)]
 
     #   endregion
 

@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from dataclasses import dataclass
 
 
 class Client(UserMixin):
@@ -39,3 +40,13 @@ class CreateOrderItemDto:
     def __init__(self, product_id=-1, amount=-1):
         self.product_id = product_id
         self.amount = amount
+
+
+@dataclass()
+class DeliveryService:
+    id: int
+    name: str
+    price: float
+
+    def to_dict(self):
+        return self.__dict__
