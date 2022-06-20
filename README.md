@@ -17,6 +17,7 @@ flask run
 
 To start front-end:
 ```bash for windows
+cd ui
 npm i
 npm start
 ```
