@@ -66,7 +66,6 @@ const Catalog = () => {
                     const categories = new Array(...new Set(data.map(r => r.category)));
                     setCategories(["Оберіть тип товару", ...categories]);
                     setProducts([...res.data.data]);
-                    dispatch(setItems(res.data.data));
                     resolve(true);
                 }).catch(err => {
                     reject(err);
