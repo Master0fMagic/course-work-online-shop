@@ -13,3 +13,10 @@ flask install -r reqiurements.txt
 $env:FLASK_APP="flaskr/main"
 flask run
 ```
+
+
+To start front-end:
+```bash for windows
+npm i
+npm start
+```
