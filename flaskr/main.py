@@ -158,7 +158,6 @@ def get_categories():
 
 
 @app.route('/api/products')
-@login_required
 def get_products():
     """
 
