@@ -1,0 +1,20 @@
+.btn{
+    padding: 10px 15px;
+    background: #ddccdf;
+
+    min-width: 15%;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.btn:hover{
+    background: #beb1be;
+    color: red;
+    cursor: pointer;
+}
+
+.items{
+    position: absolute;
+
+    right: 10%;
+}
