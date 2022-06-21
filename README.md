@@ -1,7 +1,7 @@
 # course-work-online-shop
 
 REQUIREMENTS:
-1) python >3.7 version must be installed on your pc
+1) python >3.7 and **pip** must be installed on your pc
 2) node package manager must be installed on your pc
 
 HOW TO RUN
