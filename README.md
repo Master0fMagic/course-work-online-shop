@@ -1,4 +1,4 @@
-# course-work-python-win-forms
+# course-work-online-shop
 
 REQUIREMENTS:
 1) python >3.7 version must be installed on your pc
@@ -9,7 +9,7 @@ HOW TO RUN
 
 To start back-end:
 ```bash for windows
-flask install -r reqiurements.txt
+pip install -r reqiurements.txt
 $env:FLASK_APP="flaskr/main"
 flask run
 ```
