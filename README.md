@@ -7,6 +7,12 @@ REQUIREMENTS:
 HOW TO RUN
 -
 
+To setup python virtual environment (for Windows):
+```cmd|powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
 To start back-end:
 ```bash for windows
 pip install -r reqiurements.txt
