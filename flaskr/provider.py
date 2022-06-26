@@ -231,7 +231,7 @@ group by o.id '''
         sql = f'''SELECT p.name, p2.name, p.description, p.price, o.amount 
 from product p 
 join productcategoty p2 on p2.id  = p.id
-join orderitem o on o.productid = p.id 
+join orderitem o on o.productid = p.category 
 where o.orderid = {order_id};'''
 
         return self.return_list(sql, converter.DbResponseToOrderProductInfoConverter())
