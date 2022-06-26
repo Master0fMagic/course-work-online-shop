@@ -230,7 +230,7 @@ group by o.id '''
     def get_products_by_order(self, order_id) -> list[dto.OrderProductInfo]:
         sql = f'''SELECT p.name, p2.name, p.description, p.price, o.amount 
 from product p 
-join productcategoty p2 on p2.id  = p.id
+join productcategoty p2 on p2.id  = p.category
 join orderitem o on o.productid = p.id 
 where o.orderid = {order_id};'''
 
